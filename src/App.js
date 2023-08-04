@@ -1,23 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import Registration from "./components/Registration";
+import Table from "./components/Table";
+import { useSelector } from "react-redux";
 
 function App() {
+  const { user } = useSelector((state) => state.user);
+  const [editUser, setEditUser] = useState({});
+
+  const updateUser = (user) => {
+    setEditUser(user);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Registration editUser={editUser} setEditUser={setEditUser} />
+
+      {user.length === 0 ? (
+        <div className="bg-gray-100 w-9/12 my-10 justify-center items-center flex h-40 mx-auto rounded-2xl">
+          <h1 className="text-2xl text-gray-500 font-semibold my-10 text-center">
+            No Users Found
+          </h1>
+        </div>
+      ) : (
+        <Table data={user} updateUser={updateUser} />
+      )}
     </div>
   );
 }
